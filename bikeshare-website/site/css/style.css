@@ -25,6 +25,7 @@
   --accent: #5DCAA5;      /* the ONE accent colour (logo mint), use sparingly: fills, dots, bars */
   --accent-strong: #127355; /* darker mint for small text, icons and focus rings (readable on white) */
   --accent-soft: #DDF4EB;   /* pale mint backgrounds */
+  --accent-mark: #0E8A62;   /* mint for chart marks (passes 3:1 on the grey cards) */
   --ok: #22A861;          /* "free" status in the app mockups */
 
   --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -302,7 +303,7 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 }
 .phone--main { font-size: clamp(12px, 1.55vw, 17.5px); }
 /* Hero intro: the phones rise in order once the hero visual comes into view;
-   the route to Pasch draws itself once on load, then the pin lands. */
+   the route to EDEKA Paasch draws itself once on load, then the pin lands. */
 .js .hero__visual .phone { animation: phone-rise 900ms var(--ease) both paused; }
 .js .hero__visual.is-in .phone { animation-play-state: running; }
 .js .hero__visual .phone--main { animation-delay: 120ms; }
@@ -400,6 +401,19 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
   padding: 5px 11px; border-radius: 999px;
   background: var(--surface); color: var(--accent-strong); font-size: 13px; font-weight: 650;
 }
+/* Single ride price chart: one series, bars anchored to the baseline, values labelled directly */
+.price-chart { margin: 4px 0 28px; }
+.price-chart__title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 12px; }
+.price-chart__plot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; align-items: end; height: 132px; }
+.price-chart__col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px; min-width: 0; }
+.price-chart__val { font-size: 14px; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.price-chart__bar { width: min(100%, 40px); height: calc(var(--v) / 12 * 80px); min-height: 4px; border-radius: 4px 4px 0 0; background: var(--accent-mark); transform-origin: bottom; }
+.price-chart__x { font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+.js .plan.reveal .price-chart__bar { transform: scaleY(0); transition: transform 600ms var(--ease); }
+.js .plan.reveal.is-in .price-chart__bar { transform: none; }
+.js .plan.reveal.is-in .price-chart__col:nth-child(2) .price-chart__bar { transition-delay: 60ms; }
+.js .plan.reveal.is-in .price-chart__col:nth-child(3) .price-chart__bar { transition-delay: 120ms; }
+.js .plan.reveal.is-in .price-chart__col:nth-child(4) .price-chart__bar { transition-delay: 180ms; }
 .plans__note { margin-top: 24px; font-size: 15px; color: var(--ink-2); max-width: 44em; }
 @media (max-width: 900px) {
   .plans { grid-template-columns: 1fr; }

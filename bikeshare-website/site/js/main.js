@@ -286,10 +286,10 @@
     loadStats();
   }
   /* ---- 6. Lunch break planner ------------------------------------------
-     Pasch is 1.7 km away. Minutes one way: about 20 on foot (5 km/h),
-     about 6 by bike (17 km/h). Change these if you measure better values. */
+     EDEKA Paasch is 1.5 km away. Minutes one way: about 18 on foot (5 km/h),
+     about 5 by bike (17 km/h). Change these if you measure better values. */
   var planner = $("[data-planner]");
-  var ONE_WAY = { walk: 20, bike: 6 };
+  var ONE_WAY = { walk: 18, bike: 5 };
 
   function updatePlanner() {
     var breakMin = parseInt($("#break-len", planner).value, 10);
@@ -306,7 +306,7 @@
       segs[1].classList.toggle("seg--stay", stay >= 0);
       var result = $('[data-result="' + mode + '"]', planner);
       result.innerHTML = stay >= 0
-        ? "<b>" + stay + " min</b> at Pasch"
+        ? "<b>" + stay + " min</b> at Paasch"
         : "<b>" + -stay + " min late</b> back to class";
     });
   }

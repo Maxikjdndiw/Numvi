@@ -173,7 +173,7 @@
       </defs>
       <g mask="url(#mapMask)">
         <rect width="1440" height="760" fill="url(#grid)"/>
-        <!-- route to Pasch: runs through the lower half of the glass header,
+        <!-- route to EDEKA Paasch: runs through the lower half of the glass header,
              so you can see it stretch and bend at the pill's edges -->
         <path class="hero__route" mask="url(#routeDraw)" d="M120 54 H1180 C1240 54 1290 90 1290 150 V420" fill="none" stroke="#5DCAA5" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 13"/>
         <circle cx="120" cy="54" r="9" fill="#0B0B0C"/>
@@ -256,12 +256,12 @@
                   <circle cx="172" cy="70" r="9" fill="#5DCAA5"/><circle cx="172" cy="70" r="3.5" fill="#fff"/>
                 </svg>
                 <span class="mapview__label mapview__label--a">School Station</span>
-                <span class="mapview__label mapview__label--b">Pasch</span>
+                <span class="mapview__label mapview__label--b">EDEKA Paasch</span>
               </div>
               <div class="sheet">
                 <div class="sheet__handle"></div>
-                <p class="sheet__title">To Pasch</p>
-                <p class="sheet__meta">1.7 km · about 6 min</p>
+                <p class="sheet__title">To EDEKA Paasch</p>
+                <p class="sheet__meta">1.5 km · about 5 min</p>
                 <div class="sheet__row"><span class="dot dot--ok"></span>4 bikes free at the station</div>
               </div>
             </div>
@@ -339,16 +339,16 @@
       <h2 class="h2 h2--wide reveal">Your lunch break is too short to walk.</h2>
       <div class="problem">
         <div class="problem__text">
-          <p class="lead reveal">Walking 1.7 km to Pasch eats up the whole break. Buses come only about every 30 minutes. Meanwhile, most bikes on campus stand unused all day.</p>
+          <p class="lead reveal">Walking 1.5 km to EDEKA Paasch eats up the whole break. Buses come only about every 30 minutes. Meanwhile, most bikes on campus stand unused all day.</p>
           <div class="bignum reveal">
-            <p class="bignum__value">1.7<span> km</span></p>
-            <p class="bignum__caption">to Pasch. <strong>About 6 minutes by bike.</strong></p>
+            <p class="bignum__value">1.5<span> km</span></p>
+            <p class="bignum__caption">to EDEKA Paasch. <strong>About 5 minutes by bike.</strong></p>
           </div>
         </div>
 
         <!-- LIVE: lunch break planner (js/main.js, section 6).
-             Real numbers: 1.7 km each way, about 20 min on foot (5 km/h),
-             about 6 min by bike (17 km/h). Without JS it shows a 45 minute break. -->
+             Real numbers: 1.5 km each way, about 18 min on foot (5 km/h),
+             about 5 min by bike (17 km/h). Without JS it shows a 45 minute break. -->
         <div class="planner reveal" data-planner>
           <div class="planner__head">
             <label class="planner__label" for="break-len">Your lunch break</label>
@@ -358,18 +358,18 @@
           <div class="planner__row">
             <p class="planner__mode">On foot</p>
             <div class="planner__track" data-track="walk" style="--total:45">
-              <span class="seg seg--go" style="--m:20"></span><span class="seg seg--stay" style="--m:5"></span><span class="seg seg--go" style="--m:20"></span>
+              <span class="seg seg--go" style="--m:18"></span><span class="seg seg--stay" style="--m:9"></span><span class="seg seg--go" style="--m:18"></span>
             </div>
-            <p class="planner__result" data-result="walk"><b>5 min</b> at Pasch</p>
+            <p class="planner__result" data-result="walk"><b>9 min</b> at Paasch</p>
           </div>
           <div class="planner__row planner__row--bike">
             <p class="planner__mode">By bike</p>
             <div class="planner__track" data-track="bike" style="--total:45">
-              <span class="seg seg--go" style="--m:6"></span><span class="seg seg--stay" style="--m:33"></span><span class="seg seg--go" style="--m:6"></span>
+              <span class="seg seg--go" style="--m:5"></span><span class="seg seg--stay" style="--m:35"></span><span class="seg seg--go" style="--m:5"></span>
             </div>
-            <p class="planner__result" data-result="bike"><b>33 min</b> at Pasch</p>
+            <p class="planner__result" data-result="bike"><b>35 min</b> at Paasch</p>
           </div>
-          <p class="planner__note" id="planner-note">Dark is the way there and back. Mint is your time at Pasch, red is how late you would be.</p>
+          <p class="planner__note" id="planner-note">Dark is the way there and back. Mint is your time at Paasch, red is how late you would be.</p>
         </div>
       </div>
     </div>
@@ -438,7 +438,7 @@
         <!-- Step 3 -->
         <li class="card step reveal">
           <div class="step__text">
-            <h3 class="h3">Ride to Pasch or wherever you need.</h3>
+            <h3 class="h3">Ride to EDEKA Paasch or wherever you need.</h3>
             <p>Groceries, the station, a friend in town. Just keep an eye on the clock.</p>
           </div>
           <div class="step__visual">
@@ -456,7 +456,7 @@
                     <circle cx="150" cy="140" r="9" fill="#4F7CFF" stroke="#fff" stroke-width="4"/>
                     <circle cx="178" cy="70" r="8" fill="#5DCAA5"/><circle cx="178" cy="70" r="3" fill="#fff"/>
                   </svg>
-                  <span class="mapview__label mapview__label--b">Pasch · 3 min</span>
+                  <span class="mapview__label mapview__label--b">Paasch · 3 min</span>
                 </div>
               </div>
             </div>
@@ -528,12 +528,21 @@
         <!-- Single ride -->
         <article class="card plan reveal">
           <h3 class="plan__name">Single ride</h3>
-          <p class="plan__price"><b>1 €</b><span>/ started 30 min</span></p>
-          <p class="plan__desc">No subscription. Pay as you go.</p>
+          <p class="plan__price"><b>1 €</b><span>/ first 30 min</span></p>
+          <p class="plan__desc">No subscription. Short trips stay cheap; every extra half hour costs more.</p>
           <ul class="list">
             <li><svg><use href="#i-check"/></svg>No monthly fee</li>
-            <li><svg><use href="#i-check"/></svg>Pay only for the time you ride</li>
           </ul>
+          <!-- Single ride price chart. Edit the four totals here (--v = price in €, scale max 12). -->
+          <figure class="price-chart">
+            <figcaption class="price-chart__title">Total price by ride length</figcaption>
+            <div class="price-chart__plot" role="img" aria-label="Single ride totals: 30 minutes 1 euro, 1 hour 3 euros, 1.5 hours 6 euros, 2 hours 12 euros.">
+              <div class="price-chart__col" style="--v:1"><span class="price-chart__val">1 €</span><span class="price-chart__bar"></span><span class="price-chart__x">30 min</span></div>
+              <div class="price-chart__col" style="--v:3"><span class="price-chart__val">3 €</span><span class="price-chart__bar"></span><span class="price-chart__x">1 h</span></div>
+              <div class="price-chart__col" style="--v:6"><span class="price-chart__val">6 €</span><span class="price-chart__bar"></span><span class="price-chart__x">1.5 h</span></div>
+              <div class="price-chart__col" style="--v:12"><span class="price-chart__val">12 €</span><span class="price-chart__bar"></span><span class="price-chart__x">2 h</span></div>
+            </div>
+          </figure>
           <a class="btn btn--outline btn--block" href="#signup" data-role-select="ride">Join the waitlist</a>
         </article>
       </div>
