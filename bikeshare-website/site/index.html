@@ -65,9 +65,9 @@
       <!-- Light blur so text behind the glass softens a little -->
       <feGaussianBlur in="SourceGraphic" stdDeviation="0.7" result="soft"/>
       <!-- Refract each colour channel by a slightly different amount = chromatic aberration -->
-      <feDisplacementMap in="soft" in2="map" scale="42" xChannelSelector="R" yChannelSelector="G" result="dispR"/>
-      <feDisplacementMap in="soft" in2="map" scale="39" xChannelSelector="R" yChannelSelector="G" result="dispG"/>
-      <feDisplacementMap in="soft" in2="map" scale="36" xChannelSelector="R" yChannelSelector="G" result="dispB"/>
+      <feDisplacementMap in="soft" in2="map" scale="24" xChannelSelector="R" yChannelSelector="G" result="dispR"/>
+      <feDisplacementMap in="soft" in2="map" scale="22" xChannelSelector="R" yChannelSelector="G" result="dispG"/>
+      <feDisplacementMap in="soft" in2="map" scale="20" xChannelSelector="R" yChannelSelector="G" result="dispB"/>
       <feColorMatrix in="dispR" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="chR"/>
       <feColorMatrix in="dispG" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="chG"/>
       <feColorMatrix in="dispB" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="chB"/>
@@ -177,10 +177,6 @@
         <g transform="translate(1290 420)">
           <circle r="14" fill="#5DCAA5"/><circle r="5" fill="#fff"/>
         </g>
-        <!-- coloured stops on the route -->
-        <circle cx="560" cy="54" r="7" fill="#4F7CFF"/>
-        <circle cx="720" cy="54" r="7" fill="#EF6F6C"/>
-        <circle cx="880" cy="54" r="7" fill="#FFC23D"/>
       </g>
     </svg>
 
@@ -610,9 +606,15 @@
           <h2 class="h2 h2--sm">Get on the list.</h2>
           <p class="lead">Be first when we launch in January 2027. Early sign ups get 2 free reservations.</p>
 
-          <!-- Live counter: filled from the backend (confirmed sign ups only). -->
+          <!-- Counter (js/main.js, section 5). Until CONFIG.showCountFrom people have
+               confirmed, it shows the goal; after that the live numbers. -->
           <div class="counter" data-counter>
-            <p class="counter__total"><b data-count="total">–</b> <span data-count-label>students already on the list</span></p>
+            <div class="counter__goal" data-counter-goal>
+              <p class="counter__headline">50 riders. 15 bikes.</p>
+              <p class="counter__text">That's what we need to start the pilot in January 2027. Be one of them.</p>
+            </div>
+            <div class="counter__live" data-counter-live hidden>
+            <p class="counter__total"><b data-count="total">–</b> <span>students already on the list</span></p>
             <div class="goal">
               <div class="goal__row"><span>Riders</span><span><b data-count="riders">–</b> / <span data-goal="riders">50</span></span></div>
               <div class="goal__bar"><i data-bar="riders"></i></div>
@@ -621,6 +623,7 @@
               <div class="goal__row"><span>Bike owners</span><span><b data-count="owners">–</b> / <span data-goal="owners">15</span></span></div>
               <div class="goal__bar"><i data-bar="owners"></i></div>
             </div>
+            </div>
           </div>
         </div>
 
@@ -628,18 +631,21 @@
           <form class="form" id="signup-form" novalidate>
             <div class="field">
               <label for="f-name">Name</label>
-              <input id="f-name" name="name" type="text" autocomplete="given-name" autocapitalize="words" enterkeyhint="next" maxlength="80" required placeholder="Your first name">
+              <input id="f-name" name="name" type="text" autocomplete="given-name" autocapitalize="words" enterkeyhint="next" maxlength="80" required aria-describedby="err-name" placeholder="Your first name">
+              <p class="field__error" id="err-name" data-error-for="name" role="alert" hidden></p>
             </div>
 
             <div class="field">
               <label for="f-email">School email</label>
-              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" required placeholder="you@louisenlund.de">
-              <p class="field__hint">Only school email addresses can sign up.</p>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" required aria-describedby="hint-email err-email" placeholder="name@mail.louisenlund.de">
+              <p class="field__hint" id="hint-email">Only school email addresses can sign up.</p>
+              <p class="field__error" id="err-email" data-error-for="email" role="alert" hidden></p>
             </div>
 
             <div class="field">
               <label for="f-class">Class or year</label>
-              <input id="f-class" name="class_year" type="text" autocorrect="off" enterkeyhint="next" maxlength="20" required placeholder="e.g. 10b or Year 11">
+              <input id="f-class" name="class_year" type="text" autocorrect="off" enterkeyhint="next" maxlength="20" required aria-describedby="err-class_year" placeholder="e.g. 10b or Year 11">
+              <p class="field__error" id="err-class_year" data-error-for="class_year" role="alert" hidden></p>
             </div>
 
             <fieldset class="field">
@@ -654,7 +660,7 @@
             <!-- Only shown for "lend" or "both" (handled in js/main.js) -->
             <div class="field" id="bike-type-field" hidden>
               <label for="f-bike">Bike type</label>
-              <select id="f-bike" name="bike_type">
+              <select id="f-bike" name="bike_type" aria-describedby="err-bike_type">
                 <option value="">Choose your bike</option>
                 <option value="city">City bike</option>
                 <option value="trekking">Trekking bike</option>
@@ -662,19 +668,22 @@
                 <option value="road">Road bike</option>
                 <option value="other">Other</option>
               </select>
+              <p class="field__error" id="err-bike_type" data-error-for="bike_type" role="alert" hidden></p>
             </div>
 
             <label class="check">
-              <input type="checkbox" name="age_ok" required>
+              <input type="checkbox" name="age_ok" required aria-describedby="err-age_ok">
               <span class="check__box"><svg><use href="#i-check"/></svg></span>
               <span>I am 16 or older, or I have my parent's permission.</span>
             </label>
+            <p class="field__error" id="err-age_ok" data-error-for="age_ok" role="alert" hidden></p>
 
             <label class="check">
-              <input type="checkbox" name="privacy_ok" required>
+              <input type="checkbox" name="privacy_ok" required aria-describedby="err-privacy_ok">
               <span class="check__box"><svg><use href="#i-check"/></svg></span>
               <span>I have read the <a href="datenschutz.html" target="_blank" rel="noopener">privacy notice</a>.</span>
             </label>
+            <p class="field__error" id="err-privacy_ok" data-error-for="privacy_ok" role="alert" hidden></p>
 
             <!-- Honeypot against spam bots: hidden from humans, leave empty. -->
             <div class="hp" aria-hidden="true">
@@ -696,7 +705,7 @@
             <div class="thanks__icon"><svg><use href="#i-check"/></svg></div>
             <h3 class="h3">You're almost in.</h3>
             <p>We sent a confirmation link to <b data-thanks-email>your inbox</b>. Click it to secure your spot and your 2 free reservations.</p>
-            <p class="form__fine">Nothing there? Check your spam folder.</p>
+            <p class="form__fine">Nothing there? Check your spam folder. <button class="link-btn" type="button" data-change-email>Wrong email? Change it</button></p>
           </div>
         </div>
       </div>

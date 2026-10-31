@@ -85,9 +85,12 @@
     updateBikeField();
   }
 
-  /* ---- 4. Sign up form -------------------------------------------------- */
-  var errorBox = form && $(".form__error", form);
+  /* ---- 4. Sign up form --------------------------------------------------
+     Every problem is shown at once, directly under its field (and announced
+     to screen readers). The email is also checked when you leave the field. */
+  var summary = form && $(".form__error", form);
   var thanks = $("#signup-thanks");
+  var EXAMPLE = CONFIG.emailExample || "name@mail.louisenlund.de";
 
   function isSchoolEmail(email) {
     var domains = CONFIG.schoolEmailDomains || [];
@@ -98,30 +101,53 @@
     return domains.some(function (d) { d = d.toLowerCase(); return host === d || host.slice(-(d.length + 1)) === "." + d; });
   }
 
-  function showError(msg, field) {
-    errorBox.textContent = msg;
-    errorBox.hidden = false;
-    if (field) { field.setAttribute("aria-invalid", "true"); field.focus(); }
+  function emailProblem(email) {
+    if (!email) return "Please enter your school email.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "That doesn't look like an email address. Example: " + EXAMPLE;
+    if (!isSchoolEmail(email)) return "Please use your school email, like " + EXAMPLE;
+    return "";
+  }
+
+  // the message element that belongs to a control (<p class="field__error" data-error-for="name">)
+  function errorEl(control) { return $('[data-error-for="' + control.name + '"]', form); }
+
+  function setFieldError(control, msg) {
+    var el = errorEl(control);
+    if (msg) {
+      control.setAttribute("aria-invalid", "true");
+      if (el) { el.textContent = msg; el.hidden = false; }
+    } else {
+      control.removeAttribute("aria-invalid");
+      if (el) { el.textContent = ""; el.hidden = true; }
+    }
+  }
+
+  function showSummary(msg) {
+    summary.textContent = msg;
+    summary.hidden = !msg;
   }
 
   function validate() {
     var f = form.elements;
-    $$("[aria-invalid]", form).forEach(function (el) { el.removeAttribute("aria-invalid"); });
-    errorBox.hidden = true;
-
-    var name = f.name.value.trim();
-    var email = f.email.value.trim();
-    var cls = f.class_year.value.trim();
-    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-    if (!name) return showError("Please tell us your name.", f.name), false;
-    if (!emailOk) return showError("Please enter a valid email address.", f.email), false;
-    if (!isSchoolEmail(email)) return showError("Please use your school email address (" + CONFIG.schoolEmailDomains.join(", ") + ").", f.email), false;
-    if (!cls) return showError("Please add your class or year.", f.class_year), false;
-    if (bikeSelect.required && !bikeSelect.value) return showError("Please choose your bike type.", bikeSelect), false;
-    if (!f.age_ok.checked) return showError("Please confirm that you are 16 or older, or have your parent's permission.", f.age_ok), false;
-    if (!f.privacy_ok.checked) return showError("Please confirm that you have read the privacy notice.", f.privacy_ok), false;
-    return true;
+    var problems = [
+      [f.name, f.name.value.trim() ? "" : "Please tell us your first name."],
+      [f.email, emailProblem(f.email.value.trim())],
+      [f.class_year, f.class_year.value.trim() ? "" : "Please add your class or year, e.g. 10b."],
+      [bikeSelect, bikeSelect.required && !bikeSelect.value ? "Please choose your bike type." : ""],
+      [f.age_ok, f.age_ok.checked ? "" : "Please confirm this to join."],
+      [f.privacy_ok, f.privacy_ok.checked ? "" : "Please confirm you've read the privacy notice."]
+    ];
+    var first = null, count = 0;
+    problems.forEach(function (pr) {
+      setFieldError(pr[0], pr[1]);
+      if (pr[1]) { count++; if (!first) first = pr[0]; }
+    });
+    showSummary(count > 1 ? "Please fix the " + count + " fields marked in red." : "");
+    if (first) {
+      first.focus({ preventScroll: true });
+      first.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
+    }
+    return count === 0;
   }
 
   function showThanks(email) {
@@ -134,9 +160,25 @@
   }
 
   if (form) {
-    // clear the red state as soon as the user fixes a field
-    form.addEventListener("input", function (e) { e.target.removeAttribute("aria-invalid"); });
-    form.addEventListener("change", function (e) { e.target.removeAttribute("aria-invalid"); });
+    // clear a field's message as soon as the user starts fixing it
+    form.addEventListener("input", function (e) { if (e.target.name) setFieldError(e.target, ""); });
+    form.addEventListener("change", function (e) {
+      if (e.target.type === "checkbox" || e.target.tagName === "SELECT") setFieldError(e.target, "");
+    });
+    // check the email when the user leaves the field (only if something was typed)
+    form.elements.email.addEventListener("blur", function () {
+      var v = this.value.trim();
+      if (v) setFieldError(this, emailProblem(v));
+    });
+
+    // "Wrong email? Change it": back to the filled-in form, cursor in the email field
+    var change = $("[data-change-email]", thanks);
+    if (change) change.addEventListener("click", function () {
+      thanks.hidden = true;
+      form.hidden = false;
+      form.elements.email.focus();
+      form.elements.email.select();
+    });
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -181,7 +223,7 @@
         showThanks(payload.email);
       }).catch(function (err) {
         var msg = err && err.message && !/fetch|network/i.test(err.message) ? err.message : "We could not reach the server. Please check your connection and try again.";
-        showError(msg);
+        showSummary(msg);
       }).then(function () {
         button.removeAttribute("aria-busy");
         label.textContent = "Join the waitlist";
@@ -195,7 +237,7 @@
 
   function animateNumber(el, to) {
     if (reduceMotion || to < 3) { el.textContent = to; return; }
-    var start = null, dur = 1200;
+    var start = null, dur = 800;
     function step(ts) {
       if (!start) start = ts;
       var p = Math.min((ts - start) / dur, 1);
@@ -205,7 +247,14 @@
     requestAnimationFrame(step);
   }
 
+  // Below CONFIG.showCountFrom confirmed sign-ups the page shows the goal
+  // instead of small numbers (a big "0" next to the form reads as "nobody wants this").
   function renderStats(stats) {
+    var total = stats.total || 0;
+    var showNumbers = total >= (CONFIG.showCountFrom || 10);
+    $("[data-counter-goal]", counter).hidden = showNumbers;
+    $("[data-counter-live]", counter).hidden = !showNumbers;
+    if (!showNumbers) return;
     ["total", "riders", "owners"].forEach(function (key) {
       var el = $('[data-count="' + key + '"]', counter);
       if (el) animateNumber(el, stats[key] || 0);
@@ -214,19 +263,17 @@
       var goalEl = $('[data-goal="' + key + '"]', counter);
       if (goalEl) goalEl.textContent = goals[key];
       var bar = $('[data-bar="' + key + '"]', counter);
-      if (bar) bar.style.width = Math.min(100, ((stats[key] || 0) / goals[key]) * 100) + "%";
+      if (bar) bar.style.transform = "scaleX(" + Math.min(1, (stats[key] || 0) / goals[key]) + ")";
     });
-    if (stats.total === 1) $("[data-count-label]", counter).textContent = "student already on the list";
-    if (!stats.total) $("[data-count-label]", counter).textContent = "Be one of the first to join.";
   }
 
   function loadStats() {
     if (!counter) return;
-    if (!CONFIG.endpoint) { renderStats({ total: 0, riders: 0, owners: 0 }); return; }
+    if (!CONFIG.endpoint) { renderStats({ total: 0, riders: 0, owners: 0 }); return; } // demo mode: goal framing
     fetch(CONFIG.endpoint + (CONFIG.endpoint.indexOf("?") > -1 ? "&" : "?") + "stats=1")
       .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
       .then(renderStats)
-      .catch(function () { counter.hidden = true; }); // never show broken numbers
+      .catch(function () { renderStats({ total: 0 }); }); // backend unreachable: show the goal, never broken numbers
   }
 
   // load when the sign up section comes close, so the count-up is visible

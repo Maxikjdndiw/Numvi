@@ -35,7 +35,7 @@
   var mapImage = document.getElementById("liquid-glass-map");
 
   // Tweak these to change the look of the glass:
-  var BEZEL = 0.4;    // width of the refracting rim, as a share of the pill height
+  var BEZEL = 0.32;   // width of the refracting rim, as a share of the pill height
   var CURVE = 2.2;    // >1 = distortion concentrated right at the edge
 
   function buildMap(w, h) {

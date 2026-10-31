@@ -14,8 +14,15 @@ window.SITE_CONFIG = {
      The backend checks this again, this is only for instant feedback. */
   schoolEmailDomains: ["louisenlund.de"],
 
+  /* Example address shown in hints and error messages */
+  emailExample: "name@mail.louisenlund.de",
+
   /* Waitlist goals shown next to the live counter */
   goals: { riders: 50, owners: 15 },
+
+  /* The live numbers appear once this many people have confirmed.
+     Below that the page shows the goal instead of a small number. */
+  showCountFrom: 10,
 };
 
 /* Tells the CSS that JavaScript runs (enables scroll animations).
