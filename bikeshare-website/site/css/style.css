@@ -387,6 +387,7 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
   padding: 5px 11px; border-radius: 999px;
   background: var(--surface); color: var(--accent-strong); font-size: 13px; font-weight: 650;
 }
+.plans__note { margin-top: 24px; font-size: 15px; color: var(--ink-2); max-width: 44em; }
 @media (max-width: 900px) {
   .plans { grid-template-columns: 1fr; }
   .plan--featured { order: -1; }
