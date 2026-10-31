@@ -16,7 +16,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <title>Bike Rental · Campus bikes, shared.</title>
   <meta name="description" content="Peer-to-peer bike sharing for students at Schule Louisenlund. Borrow a bike from the school station in seconds. Join the waitlist for the pilot in January 2027.">
   <meta name="theme-color" content="#FBFBFA">
@@ -628,18 +628,18 @@
           <form class="form" id="signup-form" novalidate>
             <div class="field">
               <label for="f-name">Name</label>
-              <input id="f-name" name="name" type="text" autocomplete="given-name" maxlength="80" required placeholder="Your first name">
+              <input id="f-name" name="name" type="text" autocomplete="given-name" autocapitalize="words" enterkeyhint="next" maxlength="80" required placeholder="Your first name">
             </div>
 
             <div class="field">
               <label for="f-email">School email</label>
-              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="120" required placeholder="you@louisenlund.de">
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" maxlength="120" required placeholder="you@louisenlund.de">
               <p class="field__hint">Only school email addresses can sign up.</p>
             </div>
 
             <div class="field">
               <label for="f-class">Class or year</label>
-              <input id="f-class" name="class_year" type="text" maxlength="20" required placeholder="e.g. 10b or Year 11">
+              <input id="f-class" name="class_year" type="text" autocorrect="off" enterkeyhint="next" maxlength="20" required placeholder="e.g. 10b or Year 11">
             </div>
 
             <fieldset class="field">
