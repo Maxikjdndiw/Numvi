@@ -9,7 +9,7 @@
   "use strict";
   var banner = document.getElementById("cookie-banner");
   if (!banner) return;
-  var KEY = "bikeRental.cookieChoice";
+  var KEY = "shareABike.cookieChoice";
 
   var choice = null;
   try { choice = localStorage.getItem(KEY); } catch (e) { /* storage blocked */ }

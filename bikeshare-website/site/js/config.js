@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Bike Rental · site configuration
+   Share a Bike · site configuration
    Edit these values, no other code changes needed.
    ========================================================================== */
 window.SITE_CONFIG = {

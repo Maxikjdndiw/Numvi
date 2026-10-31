@@ -1,5 +1,5 @@
 -- ============================================================================
--- Bike Rental waitlist · database setup
+-- Share a Bike waitlist · database setup
 -- Run this once in Supabase: Dashboard -> SQL Editor -> New query -> paste -> Run
 -- ============================================================================
 

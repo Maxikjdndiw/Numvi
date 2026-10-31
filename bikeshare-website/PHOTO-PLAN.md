@@ -1,4 +1,4 @@
-# Photo plan: Bike Rental waitlist site
+# Photo plan: Share a Bike waitlist site
 
 Shot list for the team, in priority order. All photos are **our own** (no stock photos). They can be
 taken with a recent phone. The app mockups and the bike drawings stay; photos add the one thing they

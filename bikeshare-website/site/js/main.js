@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Bike Rental · page behaviour
+   Share a Bike · page behaviour
    1. Scroll reveal animations
    2. Mobile menu
    3. "I want to ride / lend" buttons preselect the form option
@@ -205,7 +205,7 @@
       var request;
       if (!CONFIG.endpoint) {
         // DEMO MODE: no backend configured yet (see js/config.js)
-        console.info("Bike Rental demo mode: sign up not stored. Set SITE_CONFIG.endpoint to connect the backend.", payload);
+        console.info("Share a Bike demo mode: sign up not stored. Set SITE_CONFIG.endpoint to connect the backend.", payload);
         request = new Promise(function (resolve) { setTimeout(resolve, 700); });
       } else {
         request = fetch(CONFIG.endpoint, {
