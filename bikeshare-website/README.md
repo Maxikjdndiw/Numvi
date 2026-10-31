@@ -1,4 +1,4 @@
-# [NAME] · pre-launch waitlist website
+# Bike Rental · pre-launch waitlist website
 
 One-page waitlist site for a peer-to-peer student bike sharing pilot at Schule Louisenlund (launch January 2027).
 It's a plain static site: HTML, CSS and a little JavaScript, with no build step and no frameworks. Nothing loads from third parties: no Google, no CDNs, no cookies, no analytics.
@@ -31,7 +31,8 @@ Open http://localhost:8000. Without a backend URL the form runs in **demo mode**
 
 ## 2. Edit texts, prices and the name
 
-- **Name:** the placeholder is `[NAME]`. Search and replace it in every file in `site/` (and `tools/og-image.html`, `supabase/functions/waitlist/index.ts`).
+- **Name:** "Bike Rental". To rename, search and replace it in every file in `site/`, `tools/og-image.html` and `supabase/functions/waitlist/index.ts`.
+- **Logo:** `site/img/logo.svg` (original). The header uses an inline copy in `site/index.html`, the favicon is `site/img/favicon.svg`.
 - **Texts and prices:** all in `site/index.html`. Search for `SECTION 5` to get to pricing, for example. Each card is one block, so you can copy or delete it.
 - **Colours:** at the top of `site/css/style.css` (`--accent` is the one orange accent colour).
 - **Waitlist goals** (50 riders, 15 owners) and **allowed email domains:** `site/js/config.js`.
@@ -84,7 +85,7 @@ supabase link --project-ref YOUR_PROJECT_REF
 (The project ref is the part before `.supabase.co` in your project URL, shown under *Project Settings → General*.)
 
 ```bash
-supabase secrets set SITE_URL=https://your-site.netlify.app ALLOWED_DOMAINS=louisenlund.de BREVO_API_KEY=xkeysib-... SENDER_EMAIL=you@example.com SENDER_NAME="[NAME]"
+supabase secrets set SITE_URL=https://your-site.netlify.app ALLOWED_DOMAINS=louisenlund.de BREVO_API_KEY=xkeysib-... SENDER_EMAIL=you@example.com SENDER_NAME="Bike Rental"
 ```
 
 ```bash
@@ -138,7 +139,6 @@ This needs Node and Playwright (`npm i -D playwright && npx playwright install c
 
 ## 8. Before you print the QR code
 
-- [ ] Name chosen and `[NAME]` replaced everywhere, OG image regenerated
 - [ ] `og:url` / `og:image` point to the real domain
 - [ ] Backend connected and tested end to end (sign up → email → confirm → counter)
 - [ ] Impressum and Datenschutz filled in and checked by the school

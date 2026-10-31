@@ -1,5 +1,5 @@
 /* ==========================================================================
-   [NAME] · stylesheet
+   Bike Rental · stylesheet
    --------------------------------------------------------------------------
    1. Design tokens (colours, type, spacing)  <- change the look here
    2. Font (self-hosted Inter)
@@ -208,7 +208,7 @@ button, input, select { font: inherit; color: inherit; }
 }
 
 .logo { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-weight: 700; letter-spacing: -.03em; font-size: 17px; margin-right: auto; }
-.logo__mark { width: 30px; height: 30px; color: var(--ink); }
+.logo__mark { width: 32px; height: 30px; color: var(--ink); }
 .logo__mark svg { width: 100%; height: 100%; }
 
 .nav { position: relative; display: flex; align-items: center; gap: 2px; }

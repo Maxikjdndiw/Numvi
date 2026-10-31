@@ -1,5 +1,5 @@
 /* ==========================================================================
-   [NAME] · site configuration
+   Bike Rental · site configuration
    Edit these values, no other code changes needed.
    ========================================================================== */
 window.SITE_CONFIG = {

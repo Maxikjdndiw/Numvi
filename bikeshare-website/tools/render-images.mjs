@@ -17,8 +17,8 @@ await page.screenshot({ path: path.join(img, "og-image.png") });
 await page.setViewportSize({ width: 180, height: 180 });
 const fs = await import("fs");
 const svg = fs.readFileSync(path.join(img, "favicon.svg"), "utf8");
-await page.setContent(`<body style="margin:0;background:#0B0B0C;width:180px;height:180px">
-  <div style="width:180px;height:180px;transform:scale(1.25)">${svg.replace("<svg ", '<svg width="180" height="180" ')}</div></body>`);
+await page.setContent(`<body style="margin:0;background:#FFFFFF;width:180px;height:180px">
+  <div style="width:180px;height:180px;transform:scale(1)">${svg.replace("<svg ", '<svg width="180" height="180" ')}</div></body>`);
 await page.waitForTimeout(200);
 await page.screenshot({ path: path.join(img, "apple-touch-icon.png") });
 await browser.close();

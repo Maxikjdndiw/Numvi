@@ -1,5 +1,5 @@
 // ============================================================================
-// [NAME] waitlist · Supabase Edge Function (Deno)
+// Bike Rental waitlist · Supabase Edge Function (Deno)
 //
 //   POST /waitlist              -> store sign up, send confirmation email
 //   GET  /waitlist?token=...    -> confirm email (double opt-in), redirect
@@ -10,7 +10,7 @@
 //   ALLOWED_DOMAINS   e.g. louisenlund.de                  (comma separated)
 //   BREVO_API_KEY     API key from brevo.com (free plan: 300 emails/day)
 //   SENDER_EMAIL      a sender address you verified in Brevo
-//   SENDER_NAME       e.g. [NAME]
+//   SENDER_NAME       e.g. Bike Rental
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided automatically.
 // ============================================================================
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
@@ -20,7 +20,7 @@ const ALLOWED_DOMAINS = (Deno.env.get("ALLOWED_DOMAINS") ?? "louisenlund.de")
   .split(",").map((d) => d.trim().toLowerCase()).filter(Boolean);
 const BREVO_API_KEY = Deno.env.get("BREVO_API_KEY") ?? "";
 const SENDER_EMAIL = Deno.env.get("SENDER_EMAIL") ?? "";
-const SENDER_NAME = Deno.env.get("SENDER_NAME") ?? "[NAME]";
+const SENDER_NAME = Deno.env.get("SENDER_NAME") ?? "Bike Rental";
 const FUNCTION_URL = `${Deno.env.get("SUPABASE_URL")}/functions/v1/waitlist`;
 
 const db = createClient(

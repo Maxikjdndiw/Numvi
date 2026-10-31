@@ -1,5 +1,5 @@
 -- ============================================================================
--- [NAME] waitlist · database setup
+-- Bike Rental waitlist · database setup
 -- Run this once in Supabase: Dashboard -> SQL Editor -> New query -> paste -> Run
 -- ============================================================================
 
