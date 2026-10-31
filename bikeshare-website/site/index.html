@@ -166,16 +166,20 @@
           <stop offset="1" stop-color="#fff" stop-opacity="0"/>
         </linearGradient>
         <mask id="mapMask"><rect width="1440" height="760" fill="url(#mapFade)"/></mask>
+        <!-- Intro: this solid path is drawn once on load and reveals the dashed route under it -->
+        <mask id="routeDraw" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="760">
+          <path class="hero__route-draw" d="M120 54 H1180 C1240 54 1290 90 1290 150 V420" pathLength="1" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+        </mask>
       </defs>
       <g mask="url(#mapMask)">
         <rect width="1440" height="760" fill="url(#grid)"/>
         <!-- route to Pasch: runs through the lower half of the glass header,
              so you can see it stretch and bend at the pill's edges -->
-        <path class="hero__route" d="M120 54 H1180 C1240 54 1290 90 1290 150 V420" fill="none" stroke="#5DCAA5" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 13"/>
+        <path class="hero__route" mask="url(#routeDraw)" d="M120 54 H1180 C1240 54 1290 90 1290 150 V420" fill="none" stroke="#5DCAA5" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 13"/>
         <circle cx="120" cy="54" r="9" fill="#0B0B0C"/>
         <circle cx="120" cy="54" r="3.5" fill="#fff"/>
         <g transform="translate(1290 420)">
-          <circle r="14" fill="#5DCAA5"/><circle r="5" fill="#fff"/>
+          <g class="hero__pin"><circle r="14" fill="#5DCAA5"/><circle r="5" fill="#fff"/></g>
         </g>
       </g>
     </svg>
@@ -655,6 +659,8 @@
                 <label><input type="radio" name="role" value="ride" checked><span>Ride</span></label>
                 <label><input type="radio" name="role" value="lend"><span>Lend my bike</span></label>
                 <label><input type="radio" name="role" value="both"><span>Both</span></label>
+                <!-- Dark copy of the labels, clipped to the selected option (css: Segmented control) -->
+                <div class="segmented__active" aria-hidden="true"><span>Ride</span><span>Lend my bike</span><span>Both</span></div>
               </div>
             </fieldset>
 

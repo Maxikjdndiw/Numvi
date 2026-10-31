@@ -35,6 +35,7 @@
   --gutter: 20px;
   --section: clamp(64px, 8vw, 112px);
   --ease: cubic-bezier(0.23, 1, 0.32, 1); /* strong ease-out for all UI motion */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* things moving across the screen */
 
   color-scheme: light;
   interpolate-size: allow-keywords; /* smooth FAQ open/close in browsers that support it */
@@ -300,6 +301,18 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
   gap: clamp(16px, 3vw, 40px); padding-top: 6%;
 }
 .phone--main { font-size: clamp(12px, 1.55vw, 17.5px); }
+/* Hero intro: the phones rise in order once the hero visual comes into view;
+   the route to Pasch draws itself once on load, then the pin lands. */
+.js .hero__visual .phone { animation: phone-rise 900ms var(--ease) both paused; }
+.js .hero__visual.is-in .phone { animation-play-state: running; }
+.js .hero__visual .phone--main { animation-delay: 120ms; }
+.js .hero__visual .phone--left { animation-delay: 220ms; }
+.js .hero__visual .phone--right { animation-delay: 300ms; }
+@keyframes phone-rise { from { opacity: 0; transform: translateY(48px); } }
+.js .hero__route-draw { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: route-draw 1600ms var(--ease-in-out) 400ms forwards; }
+@keyframes route-draw { to { stroke-dashoffset: 0; } }
+.js .hero__pin { transform-box: fill-box; transform-origin: center; animation: pin-in 300ms var(--ease) 1900ms both; }
+@keyframes pin-in { from { opacity: 0; transform: scale(.9); } }
 .phone--side { font-size: clamp(11px, 1.3vw, 15px); margin-top: 7%; }
 @media (max-width: 760px) {
   .hero__actions { width: 100%; flex-direction: column; }
@@ -350,7 +363,7 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 .planner__row { display: grid; grid-template-columns: 76px 1fr; grid-template-areas: "mode track" ". result"; gap: 8px 16px; align-items: center; }
 .planner__mode { grid-area: mode; font-size: 15px; font-weight: 650; }
 .planner__track { grid-area: track; display: flex; gap: 3px; height: 28px; }
-.seg { width: calc(var(--m) / var(--total) * 100%); border-radius: 7px; background: var(--ink); transition: width 120ms var(--ease); } /* follows the thumb while dragging */
+.seg { width: calc(var(--m) / var(--total) * 100%); border-radius: 7px; background: var(--ink); transition: width 120ms var(--ease), background-color 150ms ease; } /* follows the thumb while dragging */
 .seg--stay { background: var(--accent); }
 .seg--late { background: #D93A2B; }
 .planner__result { grid-area: result; font-size: 15px; color: var(--ink-2); }
@@ -482,7 +495,10 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 .field input:focus, .field select:focus { outline: none; background: var(--surface); border-color: var(--ink); box-shadow: 0 0 0 4px rgba(11,11,12,.07); } /* taste-skill-ignore: form field focus ring */
 .field input[aria-invalid="true"], .field select[aria-invalid="true"] { border-color: #D93A2B; box-shadow: 0 0 0 4px rgba(217,58,43,.1); } /* taste-skill-ignore: form field error state */
 .field__hint { font-size: 13px; color: var(--ink-2); }
-.field__error { font-size: 14px; font-weight: 550; color: #B42318; }
+.field__error { font-size: 14px; font-weight: 550; color: #B42318; transition: opacity 150ms var(--ease), transform 150ms var(--ease); }
+@starting-style { .field__error { opacity: 0; transform: translateY(-4px); } }
+#bike-type-field { transition: opacity 200ms var(--ease), transform 200ms var(--ease); }
+@starting-style { #bike-type-field { opacity: 0; transform: translateY(-6px); } }
 .check + .field__error { margin: -8px 0 0 34px; }
 
 .segmented { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: var(--radius-sm); background: var(--card); }
@@ -496,6 +512,20 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 }
 .segmented input:checked + span { background: var(--ink); color: #fff; }
 .segmented input:focus-visible + span { outline: 2px solid var(--accent-strong); outline-offset: 2px; }
+.segmented__active { display: none; }
+@supports selector(:has(*)) {
+  .segmented { position: relative; }
+  .segmented input:checked + span { background: transparent; color: var(--ink-2); }
+  .segmented__active {
+    position: absolute; inset: 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+    border-radius: 11px; background: var(--ink); pointer-events: none;
+    clip-path: inset(0 calc(66.667% + 2.667px) 0 0 round 11px);
+    transition: clip-path 250ms var(--ease-in-out);
+  }
+  .segmented__active span { display: flex; align-items: center; justify-content: center; text-align: center; padding: 6px 8px; font-size: 14px; font-weight: 600; line-height: 1.2; color: #fff; }
+  .segmented:has(input[value="lend"]:checked) .segmented__active { clip-path: inset(0 calc(33.333% + 1.333px) 0 calc(33.333% + 1.333px) round 11px); }
+  .segmented:has(input[value="both"]:checked) .segmented__active { clip-path: inset(0 0 0 calc(66.667% + 2.667px) round 11px); }
+}
 
 .check { position: relative; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--ink-2); cursor: pointer; line-height: 1.45; }
 .check input { position: absolute; opacity: 0; width: 22px; height: 22px; margin: 0; cursor: pointer; }
@@ -518,6 +548,10 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 .thanks { text-align: center; padding: 32px 8px; outline: none; animation: thanks-in 450ms var(--ease); }
 .thanks__icon { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 24px; border-radius: 50%; background: var(--ink); color: #fff; }
 .thanks__icon svg { width: 30px; height: 30px; }
+.thanks__icon { animation: check-pop 400ms var(--ease) both; }
+.thanks__icon svg { stroke-dasharray: 20; stroke-dashoffset: 20; animation: check-draw 320ms var(--ease) 180ms forwards; }
+@keyframes check-pop { from { opacity: 0; transform: scale(.9); } }
+@keyframes check-draw { to { stroke-dashoffset: 0; } }
 .thanks p { margin: 12px auto 0; max-width: 26em; color: var(--ink-2); }
 .thanks p b { color: var(--ink); overflow-wrap: anywhere; }
 @keyframes thanks-in { from { opacity: 0; transform: translateY(12px); } }
@@ -641,7 +675,7 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .js .reveal { transform: none; transition: opacity 300ms ease !important; }
   .ticker__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
   .ticker__list[aria-hidden] { display: none; }
