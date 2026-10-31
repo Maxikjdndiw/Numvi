@@ -401,19 +401,21 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
   padding: 5px 11px; border-radius: 999px;
   background: var(--surface); color: var(--accent-strong); font-size: 13px; font-weight: 650;
 }
-/* Single ride price chart: one series, bars anchored to the baseline, values labelled directly */
+/* Single ride price chart: one series as a line with direct value labels */
 .price-chart { margin: 4px 0 28px; }
-.price-chart__title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 12px; }
-.price-chart__plot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; align-items: end; height: 132px; }
-.price-chart__col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px; min-width: 0; }
-.price-chart__val { font-size: 14px; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
-.price-chart__bar { width: min(100%, 40px); height: calc(var(--v) / 12 * 80px); min-height: 4px; border-radius: 4px 4px 0 0; background: var(--accent-mark); transform-origin: bottom; }
-.price-chart__x { font-size: 13px; color: var(--ink-2); white-space: nowrap; }
-.js .plan.reveal .price-chart__bar { transform: scaleY(0); transition: transform 600ms var(--ease); }
-.js .plan.reveal.is-in .price-chart__bar { transform: none; }
-.js .plan.reveal.is-in .price-chart__col:nth-child(2) .price-chart__bar { transition-delay: 60ms; }
-.js .plan.reveal.is-in .price-chart__col:nth-child(3) .price-chart__bar { transition-delay: 120ms; }
-.js .plan.reveal.is-in .price-chart__col:nth-child(4) .price-chart__bar { transition-delay: 180ms; }
+.price-chart__title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.price-line { display: block; width: 100%; height: auto; overflow: visible; }
+.price-line__base { stroke: #DDDDD8; stroke-width: 1; } /* taste-skill-ignore: chart baseline */
+.price-line__area { fill: var(--accent-soft); }
+.price-line__path { fill: none; stroke: var(--accent-mark); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.price-line__dot { fill: var(--accent-mark); stroke: var(--card); stroke-width: 2; }
+.price-line__val { font-size: 13px; font-weight: 650; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.price-line__x { font-size: 13px; fill: var(--ink-2); }
+/* draws once when the card scrolls into view */
+.js .plan.reveal .price-line__path { stroke-dasharray: 1 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease-in-out) 150ms; }
+.js .plan.reveal.is-in .price-line__path { stroke-dashoffset: 0; }
+.js .plan.reveal .price-line__area, .js .plan.reveal .price-line__dot, .js .plan.reveal .price-line__val { opacity: 0; transition: opacity 300ms var(--ease) 800ms; }
+.js .plan.reveal.is-in .price-line__area, .js .plan.reveal.is-in .price-line__dot, .js .plan.reveal.is-in .price-line__val { opacity: 1; }
 .plans__note { margin-top: 24px; font-size: 15px; color: var(--ink-2); max-width: 44em; }
 @media (max-width: 900px) {
   .plans { grid-template-columns: 1fr; }
