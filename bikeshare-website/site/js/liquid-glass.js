@@ -37,26 +37,28 @@
   var mapImage = document.getElementById("liquid-glass-map");
 
   // Tweak these to change the look of the glass:
-  var BEZEL = 0.32;   // width of the refracting rim, as a share of the pill height
+  var BEZEL = 0.32;   // width of the refracting rim, as a share of the element height
   var CURVE = 2.2;    // >1 = distortion concentrated right at the edge
 
-  function buildMap(w, h) {
+  function buildMap(w, h, radius) {
     var canvas = document.createElement("canvas");
     canvas.width = w;
     canvas.height = h;
     var ctx = canvas.getContext("2d");
     var img = ctx.createImageData(w, h);
     var data = img.data;
-    var r = h / 2;               // pill radius
+    var r = Math.min(radius || h / 2, h / 2, w / 2); // corner radius
     var bezel = h * BEZEL;
 
     for (var y = 0; y < h; y++) {
       for (var x = 0; x < w; x++) {
         var px = x + 0.5, py = y + 0.5;
-        // nearest point on the pill's centre line
+        // nearest point of the inner rectangle (the shape minus its corner radius)
         var cx = Math.min(Math.max(px, r), w - r);
-        var vx = px - cx, vy = py - r;
-        var len = Math.sqrt(vx * vx + vy * vy) || 1;
+        var cy = Math.min(Math.max(py, r), h - r);
+        var vx = px - cx, vy = py - cy;
+        var len = Math.sqrt(vx * vx + vy * vy);
+        if (!len) { data[(y * w + x) * 4] = 128; data[(y * w + x) * 4 + 1] = 128; data[(y * w + x) * 4 + 2] = 128; data[(y * w + x) * 4 + 3] = 255; continue; } // deep inside: no bend
         var distToEdge = r - len;                         // 0 at the rim
         var t = Math.min(Math.max(1 - distToEdge / bezel, 0), 1);
         var m = Math.pow(t, CURVE);                       // 0 centre .. 1 rim
@@ -94,7 +96,7 @@
       var w = Math.round(el.offsetWidth), h = Math.round(el.offsetHeight);
       if (!w || !h || (w === lastW && h === lastH)) return;
       lastW = w; lastH = h;
-      var url = buildMap(w, h);
+      var url = buildMap(w, h, parseFloat(getComputedStyle(el).borderTopLeftRadius));
       mapEl.setAttribute("width", w);
       mapEl.setAttribute("height", h);
       mapEl.setAttribute("href", url);
