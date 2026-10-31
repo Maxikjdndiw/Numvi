@@ -5,6 +5,7 @@
    3. "I want to ride / lend" buttons preselect the form option
    4. Sign up form (validation, submit, thank-you state)
    5. Live waitlist counter
+   6. Lunch break planner (problem section)
    ========================================================================== */
 (function () {
   "use strict";
@@ -32,7 +33,7 @@
         entry.target.classList.add("is-in");
         io.unobserve(entry.target);
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+    }, { rootMargin: "0px 0px -4% 0px", threshold: 0 });
     reveals.forEach(function (el) { io.observe(el); });
   } else {
     reveals.forEach(function (el) { el.classList.add("is-in"); });
@@ -236,5 +237,34 @@
     cio.observe(counter);
   } else {
     loadStats();
+  }
+  /* ---- 6. Lunch break planner ------------------------------------------
+     Pasch is 1.7 km away. Minutes one way: about 20 on foot (5 km/h),
+     about 6 by bike (17 km/h). Change these if you measure better values. */
+  var planner = $("[data-planner]");
+  var ONE_WAY = { walk: 20, bike: 6 };
+
+  function updatePlanner() {
+    var breakMin = parseInt($("#break-len", planner).value, 10);
+    $("[data-break]", planner).textContent = breakMin;
+    Object.keys(ONE_WAY).forEach(function (mode) {
+      var travel = ONE_WAY[mode] * 2;
+      var stay = breakMin - travel;
+      var track = $('[data-track="' + mode + '"]', planner);
+      var segs = $$(".seg", track);
+      // when the trip takes longer than the break, the bar grows past it and the overrun shows in red
+      track.style.setProperty("--total", Math.max(breakMin, travel));
+      segs[1].style.setProperty("--m", Math.abs(stay));
+      segs[1].classList.toggle("seg--late", stay < 0);
+      segs[1].classList.toggle("seg--stay", stay >= 0);
+      var result = $('[data-result="' + mode + '"]', planner);
+      result.innerHTML = stay >= 0
+        ? "<b>" + stay + " min</b> at Pasch"
+        : "<b>" + -stay + " min late</b> back to class";
+    });
+  }
+  if (planner) {
+    $("#break-len", planner).addEventListener("input", updatePlanner);
+    updatePlanner();
   }
 })();

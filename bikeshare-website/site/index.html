@@ -179,7 +179,7 @@
         </g>
         <!-- coloured stops on the route -->
         <circle cx="560" cy="54" r="7" fill="#4F7CFF"/>
-        <circle cx="720" cy="54" r="7" fill="#A78BFA"/>
+        <circle cx="720" cy="54" r="7" fill="#EF6F6C"/>
         <circle cx="880" cy="54" r="7" fill="#FFC23D"/>
       </g>
     </svg>
@@ -191,12 +191,12 @@
         Early sign ups get 2 free reservations
       </p>
       <h1 class="hero__title reveal">Campus bikes,<br>shared.</h1>
-      <p class="hero__sub reveal">Borrow a bike from school in seconds. Back before the bell.</p>
+      <p class="hero__sub reveal">Student bike sharing at Schule Louisenlund. Borrow a bike in seconds, back before the bell.</p>
       <div class="hero__actions reveal">
         <a class="btn btn--dark btn--lg" href="#signup" data-role-select="ride">I want to ride</a>
         <a class="btn btn--outline btn--lg" href="#signup" data-role-select="lend">I want to lend my bike</a>
       </div>
-      <p class="hero__meta reveal">Pilot at Schule Louisenlund · January 2027</p>
+      <p class="hero__meta reveal">Pilot launch January 2027</p>
     </div>
 
     <!-- Hero visual: colourful station illustration + phone mockups -->
@@ -242,7 +242,7 @@
         <div class="hero__phones">
 
           <!-- Left phone: map with the station -->
-          <div class="phone phone--side phone--left" aria-hidden="true">
+          <div data-ui class="phone phone--side phone--left" aria-hidden="true">
             <div class="phone__screen">
               <div class="phone__status"><span>12:38</span><span class="phone__island"></span><span class="phone__sig"></span></div>
               <div class="mapview">
@@ -268,7 +268,7 @@
           </div>
 
           <!-- Centre phone: booking screen -->
-          <div class="phone phone--main" aria-hidden="true">
+          <div data-ui class="phone phone--main" aria-hidden="true">
             <div class="phone__screen">
               <div class="phone__status"><span>12:41</span><span class="phone__island"></span><span class="phone__sig"></span></div>
               <div class="app">
@@ -296,7 +296,7 @@
           </div>
 
           <!-- Right phone: ride timer -->
-          <div class="phone phone--side phone--right" aria-hidden="true">
+          <div data-ui class="phone phone--side phone--right" aria-hidden="true">
             <div class="phone__screen">
               <div class="phone__status"><span>12:52</span><span class="phone__island"></span><span class="phone__sig"></span></div>
               <div class="app app--center">
@@ -336,20 +336,41 @@
        ======================================================================== -->
   <section class="section" id="problem">
     <div class="container">
-      <p class="eyebrow reveal">The problem</p>
-      <h2 class="h2 reveal">Your lunch break is too short to walk.</h2>
-      <p class="lead reveal">Walking 1.7 km to Pasch eats up the whole break. Buses come only about every 30 minutes. Meanwhile, most bikes on campus stand unused all day.</p>
+      <h2 class="h2 h2--wide reveal">Your lunch break is too short to walk.</h2>
+      <div class="problem">
+        <div class="problem__text">
+          <p class="lead reveal">Walking 1.7 km to Pasch eats up the whole break. Buses come only about every 30 minutes. Meanwhile, most bikes on campus stand unused all day.</p>
+          <div class="bignum reveal">
+            <p class="bignum__value">1.7<span> km</span></p>
+            <p class="bignum__caption">to Pasch. <strong>About 6 minutes by bike.</strong></p>
+          </div>
+        </div>
 
-      <div class="bignum reveal">
-        <p class="bignum__value">1.7<span> km</span></p>
-        <p class="bignum__caption">to Pasch. <strong>About 6 minutes by bike.</strong></p>
-      </div>
-
-      <!-- Simple comparison bars (minutes, one way). Widths set in CSS via --v (max 30). -->
-      <div class="compare reveal" role="img" aria-label="One way to Pasch: about 20 minutes on foot, up to 30 minutes waiting for the bus, about 6 minutes by bike.">
-        <div class="compare__row"><span class="compare__label">On foot</span><span class="compare__bar" style="--v:20"></span><span class="compare__val">~20 min</span></div>
-        <div class="compare__row"><span class="compare__label">Bus</span><span class="compare__bar" style="--v:30"></span><span class="compare__val">every ~30 min</span></div>
-        <div class="compare__row compare__row--accent"><span class="compare__label">Bike</span><span class="compare__bar" style="--v:6"></span><span class="compare__val">~6 min</span></div>
+        <!-- LIVE: lunch break planner (js/main.js, section 6).
+             Real numbers: 1.7 km each way, about 20 min on foot (5 km/h),
+             about 6 min by bike (17 km/h). Without JS it shows a 45 minute break. -->
+        <div class="planner reveal" data-planner>
+          <div class="planner__head">
+            <label class="planner__label" for="break-len">Your lunch break</label>
+            <output class="planner__value" id="break-out" for="break-len"><span data-break>45</span> min</output>
+          </div>
+          <input class="planner__range" id="break-len" type="range" min="30" max="75" step="5" value="45" aria-describedby="planner-note">
+          <div class="planner__row">
+            <p class="planner__mode">On foot</p>
+            <div class="planner__track" data-track="walk" style="--total:45">
+              <span class="seg seg--go" style="--m:20"></span><span class="seg seg--stay" style="--m:5"></span><span class="seg seg--go" style="--m:20"></span>
+            </div>
+            <p class="planner__result" data-result="walk"><b>5 min</b> at Pasch</p>
+          </div>
+          <div class="planner__row planner__row--bike">
+            <p class="planner__mode">By bike</p>
+            <div class="planner__track" data-track="bike" style="--total:45">
+              <span class="seg seg--go" style="--m:6"></span><span class="seg seg--stay" style="--m:33"></span><span class="seg seg--go" style="--m:6"></span>
+            </div>
+            <p class="planner__result" data-result="bike"><b>33 min</b> at Pasch</p>
+          </div>
+          <p class="planner__note" id="planner-note">Dark is the way there and back. Mint is your time at Pasch, red is how late you would be.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -359,20 +380,18 @@
        ======================================================================== -->
   <section class="section section--tight-top" id="how">
     <div class="container">
-      <p class="eyebrow reveal">How it works</p>
       <h2 class="h2 reveal">Four steps. Zero hassle.</h2>
       <p class="lead reveal">Everything happens in the app. One station, right at school.</p>
 
-      <div class="steps">
+      <ol class="steps">
         <!-- Step 1 -->
-        <article class="card step reveal">
+        <li class="card step reveal">
           <div class="step__text">
-            <span class="step__num">01</span>
             <h3 class="h3">Book a free bike in the app.</h3>
             <p>See which bikes are free right now and reserve one in two taps.</p>
           </div>
           <div class="step__visual">
-            <div class="phone phone--crop" aria-hidden="true">
+            <div data-ui class="phone phone--crop" aria-hidden="true">
               <div class="phone__screen">
                 <div class="phone__status"><span>12:41</span><span class="phone__island"></span><span class="phone__sig"></span></div>
                 <div class="app">
@@ -393,17 +412,16 @@
               </div>
             </div>
           </div>
-        </article>
+        </li>
 
         <!-- Step 2 -->
-        <article class="card step reveal">
+        <li class="card step reveal">
           <div class="step__text">
-            <span class="step__num">02</span>
             <h3 class="h3">Unlock it at the school station.</h3>
             <p>Walk up to your bike. The smart lock opens from your phone.</p>
           </div>
           <div class="step__visual">
-            <div class="phone phone--crop" aria-hidden="true">
+            <div data-ui class="phone phone--crop" aria-hidden="true">
               <div class="phone__screen">
                 <div class="phone__status"><span>12:43</span><span class="phone__island"></span><span class="phone__sig"></span></div>
                 <div class="app app--center">
@@ -415,17 +433,16 @@
               </div>
             </div>
           </div>
-        </article>
+        </li>
 
         <!-- Step 3 -->
-        <article class="card step reveal">
+        <li class="card step reveal">
           <div class="step__text">
-            <span class="step__num">03</span>
             <h3 class="h3">Ride to Pasch or wherever you need.</h3>
             <p>Groceries, the station, a friend in town. Just keep an eye on the clock.</p>
           </div>
           <div class="step__visual">
-            <div class="phone phone--crop" aria-hidden="true">
+            <div data-ui class="phone phone--crop" aria-hidden="true">
               <div class="phone__screen">
                 <div class="phone__status"><span>12:47</span><span class="phone__island"></span><span class="phone__sig"></span></div>
                 <div class="mapview mapview--full">
@@ -444,17 +461,16 @@
               </div>
             </div>
           </div>
-        </article>
+        </li>
 
         <!-- Step 4 -->
-        <article class="card step reveal">
+        <li class="card step reveal">
           <div class="step__text">
-            <span class="step__num">04</span>
             <h3 class="h3">Return it to the station on time.</h3>
             <p>About 30 minutes at lunch, 60 minutes otherwise. Lock it, done.</p>
           </div>
           <div class="step__visual">
-            <div class="phone phone--crop" aria-hidden="true">
+            <div data-ui class="phone phone--crop" aria-hidden="true">
               <div class="phone__screen">
                 <div class="phone__status"><span>13:09</span><span class="phone__island"></span><span class="phone__sig"></span></div>
                 <div class="app app--center">
@@ -466,8 +482,8 @@
               </div>
             </div>
           </div>
-        </article>
-      </div>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -477,7 +493,6 @@
        ======================================================================== -->
   <section class="section" id="pricing">
     <div class="container">
-      <p class="eyebrow reveal">For riders</p>
       <h2 class="h2 reveal">Simple prices. No surprises.</h2>
       <p class="lead reveal">Pick a plan when we launch. Early sign ups get 2 free reservations.</p>
 
@@ -530,8 +545,7 @@
        ======================================================================== -->
   <section class="section section--tight-top" id="owners">
     <div class="container">
-      <p class="eyebrow reveal">For bike owners</p>
-      <h2 class="h2 reveal">Your bike stands still all day. Let it work.</h2>
+      <h2 class="h2 reveal">Your bike stands still. Let it work.</h2>
       <p class="lead reveal">Lend it to Bike Rental and ride Premium for free. You stay in control.</p>
 
       <div class="owner-card reveal">
@@ -567,10 +581,11 @@
        ======================================================================== -->
   <section class="section" id="safety">
     <div class="container">
-      <p class="eyebrow reveal">Safety and rules</p>
-      <h2 class="h2 reveal">Safe by default.</h2>
-      <p class="lead reveal">Clear rules for riders, peace of mind for parents and owners.</p>
-
+      <div class="split">
+        <div class="split__head">
+          <h2 class="h2 reveal">Safe by default.</h2>
+          <p class="lead reveal">Clear rules for riders, peace of mind for parents and owners.</p>
+        </div>
       <ul class="safety">
         <li class="reveal"><span class="safety__icon"><svg><use href="#i-helmet"/></svg></span><b>Helmet required</b><p>No helmet, no ride. On every trip.</p></li>
         <li class="reveal"><span class="safety__icon"><svg><use href="#i-wrench"/></svg></span><b>Checked every week</b><p>Brakes, lights and tyres, every single week.</p></li>
@@ -579,6 +594,7 @@
         <li class="reveal"><span class="safety__icon"><svg><use href="#i-snow"/></svg></span><b>Weather and ice warnings</b><p>The app warns you before icy rides.</p></li>
         <li class="reveal"><span class="safety__icon"><svg><use href="#i-pause"/></svg></span><b>Paused in school holidays</b><p>No rides while school is out.</p></li>
       </ul>
+      </div>
     </div>
   </section>
 
@@ -591,7 +607,6 @@
     <div class="container">
       <div class="signup reveal">
         <div class="signup__intro">
-          <p class="eyebrow">Waitlist</p>
           <h2 class="h2 h2--sm">Get on the list.</h2>
           <p class="lead">Be first when we launch in January 2027. Early sign ups get 2 free reservations.</p>
 
@@ -692,10 +707,12 @@
        SECTION 9 · FAQ (native <details> accordion, works without JS)
        ======================================================================== -->
   <section class="section" id="faq">
-    <div class="container container--narrow">
-      <p class="eyebrow reveal">FAQ</p>
-      <h2 class="h2 reveal">Good questions.</h2>
-
+    <div class="container">
+      <div class="split">
+        <div class="split__head">
+          <h2 class="h2 reveal">Good questions.</h2>
+          <p class="lead reveal">Anything else? Write to us at hello@example.com.</p>
+        </div>
       <div class="faq reveal">
         <details>
           <summary>When does it launch?<svg><use href="#i-plus"/></svg></summary>
@@ -722,6 +739,7 @@
           <p>You get a short block from the service, so the next rider is not left waiting.</p>
         </details>
       </div>
+      </div>
     </div>
   </section>
 
@@ -730,7 +748,6 @@
        ======================================================================== -->
   <section class="section section--tight-top" id="team">
     <div class="container">
-      <p class="eyebrow reveal">Team</p>
       <h2 class="h2 reveal">Built by students, for students.</h2>
       <p class="lead reveal">Four founders at Schule Louisenlund. We use the bikes ourselves.</p>
 
@@ -785,6 +802,7 @@
         </div>
       </nav>
     </div>
+    <p class="footer__giant" aria-hidden="true">Bike Rental<span>.</span></p>
     <div class="footer__bottom">
       <p>A student project at Schule Louisenlund</p>
       <p>No tracking cookies. No analytics. © <span data-year>2026</span> Bike Rental</p>
