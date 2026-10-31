@@ -140,8 +140,30 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 .badge {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 7px 14px 7px 10px; border-radius: 999px;
-  background: var(--accent-soft);
   font-size: 14px; font-weight: 600; color: var(--ink);
+  position: relative; isolation: isolate;
+  /* frosted fallback (Safari, Firefox, iOS) */
+  background: rgba(255, 255, 255, .6);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: /* taste-skill-ignore: liquid-glass badge requested by the client */
+    inset 0 1px 0 rgba(255, 255, 255, .95),
+    inset 0 -1px 0 rgba(255, 255, 255, .5),
+    0 0 0 .5px rgba(0, 0, 0, .07),
+    0 8px 20px -8px rgba(0, 0, 0, .2);
+}
+.badge::before { /* taste-skill-ignore: glass rim */
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1px;
+  background: linear-gradient(170deg, rgba(255,255,255,1) 0%, rgba(255,255,255,.15) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,.7) 100%); /* taste-skill-ignore: glass rim */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); /* taste-skill-ignore: glass rim */
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); /* taste-skill-ignore: glass rim */
+  pointer-events: none;
+}
+/* real liquid glass (Chromium): the backdrop-filter url() is set per element by the script */
+.badge.glass--svg { background: radial-gradient(70% 120% at 50% 50%, rgba(255,255,255,.74), rgba(255,255,255,.34)); } /* taste-skill-ignore: liquid-glass */
+@media (prefers-reduced-transparency: reduce) {
+  .badge, .badge.glass--svg { background: rgba(255,255,255,.97); -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 }
 .badge__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-strong); }
 
@@ -281,10 +303,11 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 
 /* --- Hero --- */
 .hero { position: relative; padding-top: clamp(128px, 13vw, 168px); overflow: hidden; }
-.hero__map { position: absolute; top: 0; left: 50%; width: max(100%, 1440px); max-width: none; height: auto; transform: translateX(-50%); z-index: -1; pointer-events: none; }
+.hero__map { position: absolute; top: 0; left: 50%; width: 1440px; max-width: none; height: 760px; transform: translateX(-50%); overflow: visible; z-index: -1; pointer-events: none; }
+@media (min-width: 901px) { .hero { padding-top: 168px; } } /* badge centre = route line (y 186) */
 /* small screens: show the start of the trip (station label, fields, trees, water) instead of the middle */
-@media (max-width: 900px) { .hero__map { left: 0; transform: none; } }
-@media (max-width: 600px) { .hero__map-wide { display: none; } } /* keep the headline area clean on phones */
+@media (max-width: 900px) { .hero__map { left: 0; transform: translate(-100px, -40px); } } /* route behind the badge (badge centre at 146px), start pin left of it */
+@media (max-width: 900px) { .hero__map-wide { display: none; } } /* keep the headline area clean on phones */
 .hero__inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .hero__title {
   margin-top: 28px;
@@ -317,18 +340,9 @@ input, select { caret-color: var(--accent-strong); accent-color: var(--accent-st
 @keyframes route-draw { to { stroke-dashoffset: 0; } }
 .js .hero__pin { transform-box: fill-box; transform-origin: center; animation: pin-in 300ms var(--ease) 1900ms both; }
 @keyframes pin-in { from { opacity: 0; transform: scale(.9); } }
-/* Map labels and markers in the hero background */
-.hero__label rect, .hero__km rect { fill: #fff; }
-.hero__label text, .hero__km text { font-size: 13px; font-weight: 600; fill: #3A3A3E; font-variant-numeric: tabular-nums; }
-.hero__time { fill: var(--accent-strong); }
-.hero__km circle { fill: #fff; stroke: #5DCAA5; stroke-width: 2.5; }
-.hero__km path { stroke: #CFCFCA; stroke-width: 1.5; } /* taste-skill-ignore: map marker tick */
-.hero__place { font-size: 13px; font-weight: 600; fill: #8EA6BF; letter-spacing: .02em; }
 .hero__rider { opacity: 0; transition: opacity 250ms var(--ease); }
 .hero__rider.is-riding { opacity: 1; }
-/* labels and markers appear with the route */
-.js .hero__label, .js .hero__km { animation: map-label-in 400ms var(--ease) 1500ms both; }
-@keyframes map-label-in { from { opacity: 0; } }
+
 .phone--side { font-size: clamp(11px, 1.3vw, 15px); margin-top: 7%; }
 @media (max-width: 760px) {
   .hero__actions { width: 100%; flex-direction: column; }

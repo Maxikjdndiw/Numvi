@@ -156,9 +156,10 @@
          right underneath the glass header, so the refraction is visible from
          the very first second. -->
     <!-- Decorative map of the trip: school station to EDEKA Paasch (stylised, not to scale).
-         Scenery stays at the sides so the headline area stays calm. The route draws itself
-         once, then a small rider bikes it (js/main.js, "Hero rider"). -->
-    <svg class="hero__map" viewBox="0 0 1440 760" aria-hidden="true">
+         Scenery stays at the sides so the headline area stays calm. The route runs right
+         behind the glass offer badge (y 186), draws itself once, then a small rider bikes it
+         (js/main.js, "Hero rider"). -->
+    <svg class="hero__map" viewBox="0 0 1440 760" overflow="visible" aria-hidden="true">
       <defs>
         <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
           <path d="M48 0H0V48" fill="none" stroke="#E4E4DF" stroke-width="1"/>
@@ -168,28 +169,27 @@
           <stop offset=".75" stop-color="#fff" stop-opacity=".6"/>
           <stop offset="1" stop-color="#fff" stop-opacity="0"/>
         </linearGradient>
-        <mask id="mapMask"><rect width="1440" height="760" fill="url(#mapFade)"/></mask>
+        <mask id="mapMask" maskUnits="userSpaceOnUse" x="-1200" y="0" width="3840" height="760"><rect x="-1200" width="3840" height="760" fill="url(#mapFade)"/></mask>
         <!-- Intro: this solid path is drawn once on load and reveals the dashed route under it -->
-        <mask id="routeDraw" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="760">
-          <path class="hero__route-draw" d="M120 54 H1180 C1240 54 1290 90 1290 150 V420" pathLength="1" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
+        <mask id="routeDraw" maskUnits="userSpaceOnUse" x="-1200" y="0" width="3840" height="760">
+          <path class="hero__route-draw" d="M120 186 H1180 C1240 186 1290 222 1290 282 V480" pathLength="1" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/>
         </mask>
       </defs>
       <g mask="url(#mapMask)">
-        <rect width="1440" height="760" fill="url(#grid)"/>
+        <rect x="-1200" width="3840" height="760" fill="url(#grid)"/>
 
         <!-- water (the Schlei) -->
-        <path d="M-20 360 C70 330 150 380 190 450 C230 520 240 610 170 690 C130 735 60 760 -20 760 Z" fill="#E3EDF6"/>
-        <text class="hero__place" x="40" y="560">Schlei</text>
+        <path d="M-1200 380 H-20 C70 350 150 400 190 470 C230 540 240 620 170 700 C130 745 60 760 -20 760 H-1200 Z" fill="#E3EDF6"/>
 
         <!-- fields -->
-        <rect class="hero__map-wide" x="36" y="150" width="190" height="120" rx="22" fill="#EBF3E5"/>
+        <rect class="hero__map-wide" x="36" y="230" width="190" height="110" rx="22" fill="#EBF3E5"/>
         <rect x="1330" y="170" width="140" height="90" rx="20" fill="#F3EFE2"/>
         <rect x="1330" y="520" width="150" height="120" rx="22" fill="#EBF3E5"/>
         <rect x="1120" y="610" width="170" height="100" rx="22" fill="#F3EFE2"/>
 
         <!-- trees -->
         <g fill="#DCEAD3">
-          <g class="hero__map-wide"><circle cx="290" cy="190" r="22"/><circle cx="318" cy="214" r="18"/><circle cx="276" cy="228" r="16"/><circle cx="306" cy="248" r="13"/></g>
+          <g class="hero__map-wide"><circle cx="290" cy="270" r="22"/><circle cx="318" cy="294" r="18"/><circle cx="276" cy="308" r="16"/><circle cx="306" cy="328" r="13"/></g>
           <circle cx="1170" cy="240" r="20"/><circle cx="1196" cy="262" r="16"/><circle cx="1160" cy="274" r="14"/>
           <circle cx="1384" cy="390" r="18"/><circle cx="1408" cy="412" r="14"/>
           <circle cx="250" cy="430" r="15"/><circle cx="272" cy="450" r="12"/>
@@ -197,42 +197,27 @@
 
         <!-- side roads -->
         <g fill="none" stroke="#E9E9E3" stroke-width="12" stroke-linecap="round">
-          <path d="M-20 250 C60 250 100 220 120 160 V54"/>
-          <path d="M120 54 V-20"/>
-          <path d="M1180 54 C1300 54 1380 40 1460 20"/>
-          <path d="M1290 300 H1460"/>
-          <path d="M1290 420 C1295 500 1340 560 1460 590"/>
+          <path d="M-1200 330 H-20 C60 330 100 300 120 250 V186"/>
+          <path d="M120 186 V-20"/>
+          <path d="M1180 186 C1300 186 1380 168 1460 150 H2640"/>
+          <path d="M1290 380 H2640"/>
+          <path d="M1290 480 C1295 560 1340 610 1460 640 H2640"/>
           <path d="M1040 760 C1080 660 1180 600 1290 560"/>
           <path d="M200 470 C260 520 320 600 330 760"/>
         </g>
 
         <!-- the route: runs through the lower half of the glass header,
              so you can see it stretch and bend at the pill's edges -->
-        <path id="heroRoute" class="hero__route" mask="url(#routeDraw)" d="M120 54 H1180 C1240 54 1290 90 1290 150 V420" fill="none" stroke="#5DCAA5" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 13"/>
+        <path id="heroRoute" class="hero__route" mask="url(#routeDraw)" d="M120 186 H1180 C1240 186 1290 222 1290 282 V480" fill="none" stroke="#5DCAA5" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 13"/>
 
-        <!-- distance markers (route is 1.5 km) -->
-        <g class="hero__km">
-          <circle cx="613" cy="54" r="5"/><path d="M613 62 V84"/>
-          <rect x="581" y="84" width="64" height="26" rx="13"/><text x="613" y="101.5" text-anchor="middle">0.5 km</text>
-          <circle cx="1107" cy="54" r="5"/><path d="M1107 62 V84"/>
-          <rect x="1075" y="84" width="64" height="26" rx="13"/><text x="1107" y="101.5" text-anchor="middle">1.0 km</text>
-        </g>
 
         <!-- start: the station at school -->
-        <circle cx="120" cy="54" r="9" fill="#0B0B0C"/>
-        <circle cx="120" cy="54" r="3.5" fill="#fff"/>
-        <g class="hero__label">
-          <rect x="40" y="78" width="160" height="30" rx="15"/>
-          <text x="120" y="98" text-anchor="middle">School station <tspan class="hero__time">12:41</tspan></text>
-        </g>
+        <circle cx="120" cy="186" r="9" fill="#0B0B0C"/>
+        <circle cx="120" cy="186" r="3.5" fill="#fff"/>
 
         <!-- finish: EDEKA Paasch -->
-        <g transform="translate(1290 420)">
+        <g transform="translate(1290 480)">
           <g class="hero__pin"><circle r="14" fill="#5DCAA5"/><circle r="5" fill="#fff"/></g>
-        </g>
-        <g class="hero__label">
-          <rect x="1200" y="446" width="180" height="30" rx="15"/>
-          <text x="1290" y="466" text-anchor="middle">EDEKA Paasch <tspan class="hero__time">12:46</tspan></text>
         </g>
 
         <!-- the rider: rides the route once after it has drawn (skipped with reduced motion) -->
@@ -247,7 +232,7 @@
     </svg>
 
     <div class="container hero__inner">
-      <p class="badge reveal">
+      <p class="badge reveal" data-glass="badge">
         <span class="badge__dot" aria-hidden="true"></span>
         <!-- Offer text -->
         Early sign ups get 2 free reservations

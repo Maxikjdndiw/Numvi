@@ -16,8 +16,10 @@
 (function () {
   "use strict";
 
-  var glass = document.querySelector("[data-glass]");
-  if (!glass) return;
+  // Every element with data-glass gets the effect: the header pill and the hero offer badge.
+  var glasses = Array.prototype.slice.call(document.querySelectorAll("[data-glass]"));
+  var glass = document.querySelector(".site-header [data-glass]"); // the header (has the nav lens)
+  if (!glasses.length) return;
 
   /* ---- 1. Feature detection ------------------------------------------- */
   function supportsSvgBackdrop() {
@@ -69,33 +71,58 @@
     return canvas.toDataURL("image/png");
   }
 
-  var lastW = 0, lastH = 0;
-  function updateMap() {
-    var w = Math.round(glass.offsetWidth), h = Math.round(glass.offsetHeight);
-    if (!w || !h || (w === lastW && h === lastH)) return;
-    lastW = w; lastH = h;
-    var url = buildMap(w, h);
-    mapImage.setAttribute("width", w);
-    mapImage.setAttribute("height", h);
-    mapImage.setAttribute("href", url);
-    mapImage.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", url);
-  }
+  // The header uses the #liquid-glass filter from index.html. Every further glass element
+  // gets its own copy of that filter, because the displacement map must match its size.
+  var baseFilter = document.getElementById("liquid-glass");
 
-  if (mapImage && supportsSvgBackdrop()) {
-    updateMap();
-    glass.classList.add("glass--svg");
-    document.documentElement.classList.add("has-liquid-glass");
+  function setupGlass(el, index) {
+    var filter = baseFilter, mapEl = mapImage;
+    if (index > 0) {
+      filter = baseFilter.cloneNode(true);
+      filter.id = "liquid-glass-" + index;
+      mapEl = filter.querySelector("feImage");
+      mapEl.removeAttribute("id");
+      baseFilter.parentNode.appendChild(filter);
+      el.style.setProperty("-webkit-backdrop-filter", "url(#" + filter.id + ")");
+      el.style.setProperty("backdrop-filter", "url(#" + filter.id + ")");
+    }
+    var disps = Array.prototype.slice.call(filter.querySelectorAll("feDisplacementMap"));
+    var baseScales = disps.map(function (d) { return +d.getAttribute("scale"); });
+    var lastW = 0, lastH = 0;
+
+    function update() {
+      var w = Math.round(el.offsetWidth), h = Math.round(el.offsetHeight);
+      if (!w || !h || (w === lastW && h === lastH)) return;
+      lastW = w; lastH = h;
+      var url = buildMap(w, h);
+      mapEl.setAttribute("width", w);
+      mapEl.setAttribute("height", h);
+      mapEl.setAttribute("href", url);
+      mapEl.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", url);
+      // smaller pills bend less: the 60px header is the reference
+      var k = Math.min(1, h / 60);
+      disps.forEach(function (d, i) { d.setAttribute("scale", (baseScales[i] * k).toFixed(1)); });
+    }
+
+    update();
+    el.classList.add("glass--svg");
     if ("ResizeObserver" in window) {
       var pending = false;
       new ResizeObserver(function () {
         if (pending) return;
         pending = true;
-        requestAnimationFrame(function () { pending = false; updateMap(); });
-      }).observe(glass);
+        requestAnimationFrame(function () { pending = false; update(); });
+      }).observe(el);
     }
   }
 
+  if (mapImage && baseFilter && supportsSvgBackdrop()) {
+    glasses.forEach(setupGlass);
+    document.documentElement.classList.add("has-liquid-glass");
+  }
+
   /* ---- 3. Nav lens ------------------------------------------------------- */
+  if (!glass) return;
   var nav = glass.querySelector(".nav");
   var lens = nav && nav.querySelector(".nav__lens");
   if (!nav || !lens) return;
