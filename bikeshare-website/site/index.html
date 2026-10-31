@@ -46,6 +46,8 @@
   <script src="js/config.js"></script>
   <script src="js/liquid-glass.js" defer></script>
   <script src="js/main.js" defer></script>
+  <script src="js/nav-menu.js" defer></script>
+  <script src="js/cookie-banner.js" defer></script>
 </head>
 <body>
 
@@ -122,11 +124,44 @@
       <span class="logo__text">Bike Rental</span>
     </a>
 
+    <!-- Main nav. Hovering (or focusing) a link folds out a panel with links to
+         specific points on the page (js/nav-menu.js). On phones the menu button is used instead. -->
     <nav class="nav" aria-label="Main">
       <span class="nav__lens" aria-hidden="true"></span>
-      <a class="nav__link" href="#how">How it works</a>
-      <a class="nav__link" href="#pricing">Pricing</a>
-      <a class="nav__link" href="#owners">For owners</a>
+      <div class="nav__item" data-nav-item>
+        <a class="nav__link" href="#how" aria-haspopup="true" aria-expanded="false" aria-controls="menu-how">How it works<svg class="nav__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu" id="menu-how">
+          <div class="nav__panel">
+            <a class="nav__sub" href="#step-book"><b>Book a bike</b><span>Reserve a free bike in two taps</span></a>
+            <a class="nav__sub" href="#step-unlock"><b>Unlock at the station</b><span>The smart lock opens from your phone</span></a>
+            <a class="nav__sub" href="#step-ride"><b>Ride to EDEKA Paasch</b><span>1.5 km, about 5 minutes</span></a>
+            <a class="nav__sub" href="#step-return"><b>Return on time</b><span>About 30 minutes at lunch</span></a>
+            <a class="nav__sub" href="#planner"><b>Lunch break planner</b><span>See how much time you win</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item" data-nav-item>
+        <a class="nav__link" href="#pricing" aria-haspopup="true" aria-expanded="false" aria-controls="menu-pricing">Pricing<svg class="nav__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu" id="menu-pricing">
+          <div class="nav__panel">
+            <a class="nav__sub" href="#plan-basic"><b>Basic · 15 € / month</b><span>Unlimited rides up to 60 minutes</span></a>
+            <a class="nav__sub" href="#plan-premium"><b>Premium · 22 € / month</b><span>Rides up to 2 hours, free reservations</span></a>
+            <a class="nav__sub" href="#plan-single"><b>Single ride · from 1 €</b><span>No subscription, see the price chart</span></a>
+            <a class="nav__sub" href="#lunch-rule"><b>Lunch break rule</b><span>Every lunch ride is about 30 minutes</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item" data-nav-item>
+        <a class="nav__link" href="#owners" aria-haspopup="true" aria-expanded="false" aria-controls="menu-owners">For owners<svg class="nav__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu" id="menu-owners">
+          <div class="nav__panel">
+            <a class="nav__sub" href="#owner-benefits"><b>Benefits</b><span>Free Premium, worth 22 € a month</span></a>
+            <a class="nav__sub" href="#owner-requirements"><b>Requirements</b><span>A safe, roadworthy bike with lights</span></a>
+            <a class="nav__sub" href="#safety"><b>Safety and rules</b><span>GPS, weekly checks, helmets</span></a>
+            <a class="nav__sub" href="#signup" data-role-select="lend"><b>Lend your bike</b><span>Join the waitlist as an owner</span></a>
+          </div>
+        </div>
+      </div>
     </nav>
 
     <a class="btn btn--dark btn--sm header__cta" href="#signup" data-role-select="ride">
@@ -396,7 +431,7 @@
         <!-- LIVE: lunch break planner (js/main.js, section 6).
              Real numbers: 1.5 km each way, about 18 min on foot (5 km/h),
              about 5 min by bike (17 km/h). Without JS it shows a 45 minute break. -->
-        <div class="planner reveal" data-planner>
+        <div class="planner reveal" id="planner" data-planner>
           <div class="planner__head">
             <label class="planner__label" for="break-len">Your lunch break</label>
             <output class="planner__value" id="break-out" for="break-len"><span data-break>45</span> min</output>
@@ -432,7 +467,7 @@
 
       <ol class="steps">
         <!-- Step 1 -->
-        <li class="card step reveal">
+        <li class="card step reveal" id="step-book">
           <div class="step__text">
             <h3 class="h3">Book a free bike in the app.</h3>
             <p>See which bikes are free right now and reserve one in two taps.</p>
@@ -462,7 +497,7 @@
         </li>
 
         <!-- Step 2 -->
-        <li class="card step reveal">
+        <li class="card step reveal" id="step-unlock">
           <div class="step__text">
             <h3 class="h3">Unlock it at the school station.</h3>
             <p>Walk up to your bike. The smart lock opens from your phone.</p>
@@ -483,7 +518,7 @@
         </li>
 
         <!-- Step 3 -->
-        <li class="card step reveal">
+        <li class="card step reveal" id="step-ride">
           <div class="step__text">
             <h3 class="h3">Ride to EDEKA Paasch or wherever you need.</h3>
             <p>Groceries, the station, a friend in town. Just keep an eye on the clock.</p>
@@ -511,7 +546,7 @@
         </li>
 
         <!-- Step 4 -->
-        <li class="card step reveal">
+        <li class="card step reveal" id="step-return">
           <div class="step__text">
             <h3 class="h3">Return it to the station on time.</h3>
             <p>At lunch, rides are about 30 minutes so you're back for class. Otherwise your plan sets the limit. Lock it, done.</p>
@@ -545,7 +580,7 @@
 
       <div class="plans">
         <!-- Basic -->
-        <article class="card plan reveal">
+        <article class="card plan reveal" id="plan-basic">
           <h3 class="plan__name">Basic</h3>
           <p class="plan__price"><b>15 €</b><span>/ month</span></p>
           <p class="plan__desc">One fixed price for short everyday trips.</p>
@@ -557,7 +592,7 @@
         </article>
 
         <!-- Premium (highlighted) -->
-        <article class="card plan plan--featured reveal">
+        <article class="card plan plan--featured reveal" id="plan-premium">
           <p class="plan__badge">Best for regular riders</p>
           <h3 class="plan__name">Premium</h3>
           <p class="plan__price"><b>22 €</b><span>/ month</span></p>
@@ -573,7 +608,7 @@
         </article>
 
         <!-- Single ride -->
-        <article class="card plan reveal">
+        <article class="card plan reveal" id="plan-single">
           <h3 class="plan__name">Single ride</h3>
           <p class="plan__price"><b>1 €</b><span>/ first 30 min</span></p>
           <p class="plan__desc">No subscription. Short trips stay cheap; every extra half hour costs more.</p>
@@ -605,7 +640,7 @@
           <a class="btn btn--outline btn--block" href="#signup" data-role-select="ride">Join the waitlist</a>
         </article>
       </div>
-      <p class="plans__note reveal">During lunch break every ride is about 30 minutes, whatever your plan, so the next student gets a bike and everyone is back for class.</p>
+      <p class="plans__note reveal" id="lunch-rule">During lunch break every ride is about 30 minutes, whatever your plan, so the next student gets a bike and everyone is back for class.</p>
     </div>
   </section>
 
@@ -620,7 +655,7 @@
       <div class="owner-card reveal">
         <div class="owner-card__main">
           <p class="owner-card__worth"><b>Free Premium</b><span>worth 22 € a month</span></p>
-          <ul class="list list--lg">
+          <ul class="list list--lg" id="owner-benefits">
             <li><svg><use href="#i-check"/></svg>Your bike stays on campus</li>
             <li><svg><use href="#i-check"/></svg>You choose when it is available</li>
             <li><svg><use href="#i-check"/></svg>You can always book your own bike first</li>
@@ -628,7 +663,7 @@
             <li><svg><use href="#i-check"/></svg>Riders pay for any damage or loss, and we handle it</li>
             <li><svg><use href="#i-check"/></svg>You never deal with the rider directly</li>
           </ul>
-          <p class="owner-card__req"><b>Requirements:</b> a safe, roadworthy bike with working lights.</p>
+          <p class="owner-card__req" id="owner-requirements"><b>Requirements:</b> a safe, roadworthy bike with working lights.</p>
           <a class="btn btn--dark btn--lg" href="#signup" data-role-select="lend">Lend my bike</a>
         </div>
 
@@ -875,7 +910,7 @@
           <h4>Legal</h4>
           <a href="impressum.html">Impressum</a>
           <a href="datenschutz.html">Datenschutzerklärung</a>
-          <a href="datenschutz.html">Privacy notice</a>
+          <a href="cookies.html">Cookies</a>
         </div>
         <div>
           <h4>Contact</h4>
@@ -893,6 +928,16 @@
     </div>
   </div>
 </footer>
+
+<!-- Cookie notice. This site sets no cookies; the banner says so and remembers the
+     visitor's choice in localStorage so it does not show again (js/cookie-banner.js). -->
+<div class="cookie" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookies" hidden>
+  <p class="cookie__text"><b>No tracking cookies here.</b> We don't use analytics or advertising cookies. <a href="cookies.html">Cookie policy</a></p>
+  <div class="cookie__actions">
+    <button class="btn btn--outline btn--sm" type="button" data-cookie="decline">Decline</button>
+    <button class="btn btn--dark btn--sm" type="button" data-cookie="accept">Accept</button>
+  </div>
+</div>
 
 </body>
 </html>

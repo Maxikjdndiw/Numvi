@@ -132,7 +132,8 @@
   function moveLens(link) {
     var first = !nav.classList.contains("is-hovering");
     if (first) lens.style.transition = "opacity .25s"; // appear in place, don't slide in from 0
-    lens.style.setProperty("--x", link.offsetLeft + "px");
+    // links sit inside .nav__item wrappers, so add the wrapper's offset
+    lens.style.setProperty("--x", (link.parentElement.offsetLeft + link.offsetLeft) + "px");
     lens.style.setProperty("--w", link.offsetWidth + "px");
     nav.classList.add("is-hovering");
     if (first) { void lens.offsetWidth; lens.style.transition = ""; }
