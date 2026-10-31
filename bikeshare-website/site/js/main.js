@@ -285,6 +285,18 @@
   } else {
     loadStats();
   }
+  /* ---- Hero rider ------------------------------------------------------
+     After the route has drawn itself (~2 s), a small rider bikes it once from
+     the school station to EDEKA Paasch. Skipped for reduced motion. */
+  var rider = $("[data-rider]");
+  var riderMotion = document.getElementById("riderMotion");
+  if (rider && riderMotion && riderMotion.beginElement && !reduceMotion) {
+    setTimeout(function () {
+      rider.classList.add("is-riding");
+      riderMotion.beginElement();
+    }, 2100);
+  }
+
   /* ---- 6. Lunch break planner ------------------------------------------
      EDEKA Paasch is 1.5 km away. Minutes one way: about 18 on foot (5 km/h),
      about 5 by bike (17 km/h). Change these if you measure better values. */
